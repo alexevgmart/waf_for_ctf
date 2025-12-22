@@ -396,7 +396,7 @@ def http_to_python_requests(data):
             result_data += f"\t'{header.split(':')[0]}': f'{{sys.argv[1]}}:{header.split(':')[2]}',\n"
             continue
         if len(header.split(':')) > 2:
-            result_data += f"\t'{header.split(':')[0]}': '{":".join(header.split(':')[1:])}',\n"
+            result_data += f"\t'{header.split(':')[0]}': '{':'.join(header.split(':')[1:])}',\n"
         else:
             result_data += f"\t'{header.split(':')[0]}': '{header.split(': ')[1]}',\n"
     result_data += '}\n'
@@ -493,13 +493,13 @@ def generate_export_data(id):
             # return file_data + f"io.send(b'{str(b64d(process[0][2]))[2:-1]}')\n\nio.interactive()"
             queries = session_db.query(Streams).filter(
                 Streams.service_name == stream_info.service_name,
-                Streams.remote_addr.like(f'%{stream_info.remote_addr.split(':')[0]}:%'),
+                Streams.remote_addr.like(f"%{stream_info.remote_addr.split(':')[0]}:%"),
                 Streams.id <= stream_info.id
             ).order_by(Streams.id.desc()).limit(10).all()
             return process_http_export_data(queries)
 
         file_data = 'import sys\nfrom pwn import *\n\n'
-        file_data += f'io = remote(sys.argv[1], {services[stream_info.service_name]['in_port']})\n# io = process(["./binary_name"])\n\n'
+        file_data += f"io = remote(sys.argv[1], {services[stream_info.service_name]['in_port']})\n# io = process(['./binary_name'])\n\n"
 
         if len(process) == 1 and process[0][0] == 0:
             return file_data + f"io.send(b'{str(b64d(process[0][2]))[2:-1]}')\n\nio.interactive()"

@@ -6,6 +6,7 @@ import os
 import re
 from sqlalchemy import create_engine, Column, Integer, Text, text, String
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.dialects.mysql import LONGTEXT
 from sqlalchemy.ext.declarative import declarative_base
 from dotenv import load_dotenv
 
@@ -20,7 +21,7 @@ Base = declarative_base()
 class Streams(Base):
     __tablename__ = 'streams'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    stream = Column(Text, nullable=False)
+    stream = Column(LONGTEXT, nullable=False)
     service_name = Column(String(255), nullable=True)
     remote_addr = Column(String(255), nullable=True)
 

@@ -1,6 +1,7 @@
 from flask import Flask, render_template, send_file, request, redirect, url_for, session, jsonify, abort
 from flask_socketio import SocketIO, emit
 from sqlalchemy import create_engine, Column, Integer, Text, text, String
+from sqlalchemy.dialects.mysql import LONGTEXT
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.future import select
@@ -39,7 +40,7 @@ Base = declarative_base()
 class Streams(Base):
     __tablename__ = 'streams'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    stream = Column(Text, nullable=False)
+    stream = Column(LONGTEXT, nullable=False)
     service_name = Column(String(255), nullable=True)
     remote_addr = Column(String(255), nullable=True)
 
